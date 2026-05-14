@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy — The Dark Room: Hidden Object</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
+            background: #040208;
+            color: #bfb4d4;
+            line-height: 1.65;
+        }
+
+        .glow-field {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 100% 60% at 50% -5%, rgba(120, 80, 180, 0.28) 0%, transparent 52%),
+                radial-gradient(ellipse 50% 40% at 0% 90%, rgba(60, 40, 100, 0.35) 0%, transparent 55%),
+                radial-gradient(ellipse 45% 35% at 100% 55%, rgba(160, 90, 40, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            opacity: 0.04;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.06) 2px,
+                rgba(255, 255, 255, 0.06) 4px
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .shell {
+            position: relative;
+            z-index: 1;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding: 14px 18px;
+            margin-bottom: 28px;
+            border-radius: 14px;
+            background: rgba(14, 10, 26, 0.9);
+            border: 1px solid rgba(140, 110, 190, 0.28);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+        }
+
+        .topbar h1 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            color: #f2ecff;
+        }
+
+        .topbar span {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: #c49a4a;
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 190, 120, 0.3);
+            background: rgba(40, 24, 12, 0.5);
+        }
+
+        .intro {
+            font-size: 1.05rem;
+            color: #a898c0;
+            margin-bottom: 36px;
+            padding-left: 4px;
+            border-left: 3px solid rgba(200, 160, 90, 0.55);
+            padding-left: 20px;
+        }
+
+        .intro strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .deck {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        article {
+            position: relative;
+            border-radius: 18px;
+            padding: 22px 22px 22px 26px;
+            background: linear-gradient(135deg, rgba(20, 14, 36, 0.92) 0%, rgba(8, 6, 18, 0.95) 100%);
+            border: 1px solid rgba(100, 70, 150, 0.22);
+            overflow: hidden;
+        }
+
+        article::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #e8b86a, #8b6bc8);
+            opacity: 0.85;
+        }
+
+        article h2 {
+            font-size: 1.12rem;
+            font-weight: 800;
+            color: #f5e8c8;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        article p {
+            font-size: 0.95rem;
+            color: #9d8eb8;
+        }
+
+        article p + p {
+            margin-top: 10px;
+        }
+
+        .dual {
+            display: grid;
+            gap: 18px;
+        }
+
+        @media (min-width: 600px) {
+            .dual {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .mini {
+            border-radius: 16px;
+            padding: 20px;
+            background: rgba(6, 4, 14, 0.88);
+            border: 1px dashed rgba(140, 110, 180, 0.28);
+        }
+
+        .mini h3 {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #d4a5ff;
+            margin-bottom: 10px;
+        }
+
+        .mini p {
+            font-size: 0.9rem;
+            color: #8a7ca0;
+        }
+
+        .closing {
+            margin-top: 36px;
+            text-align: center;
+            font-size: 0.86rem;
+            color: #5c5070;
+            line-height: 1.7;
+            max-width: 52ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-home {
+            margin-top: 36px;
+            text-align: center;
+        }
+
+        .nav-home a {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #120818;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #f4d9a8 0%, #b8893c 100%);
+            border: 1px solid rgba(255, 230, 180, 0.35);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .nav-home a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 32px rgba(200, 140, 60, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="glow-field" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <div class="shell">
+        <header class="topbar">
+            <h1>The Dark Room: Hidden Object</h1>
+            <span>Privacy</span>
+        </header>
+
+        <p class="intro">
+            <strong>This document describes how the app treats information.</strong> It is written for players and parents who want a straightforward explanation without legal jargon overload. Distribution is through the Apple App Store only; platform rules still apply.
+        </p>
+
+        <div class="deck">
+            <article>
+                <h2>No account required inside the game</h2>
+                <p>The experience is designed around single-device play. You are not asked to register a separate in-app identity to enjoy hidden object levels, hints, or progress that the title stores for convenience on the device.</p>
+            </article>
+
+            <article>
+                <h2>What may live on your device</h2>
+                <p>Like many puzzle titles, the app can keep local data so you do not lose your place—examples include level progress, preferences, or similar session state. That information stays with the app’s sandbox on your phone or tablet unless you remove the app or erase its data using iOS settings.</p>
+            </article>
+
+            <article>
+                <h2>Data collection summary</h2>
+                <p>According to the App Store privacy nutrition label for this product, no data is collected from you through the app in the way that label defines “collection.” If Apple’s summary ever changes after an update, the App Store listing remains the primary place Apple shows that classification.</p>
+                <p>Separately, Apple itself processes downloads, updates, receipts, and device-level diagnostics according to Apple’s own policies and your system toggles—those flows are not unique to this game.</p>
+            </article>
+
+            <article>
+                <h2>Children and shared devices</h2>
+                <p>The title is suitable for a broad audience. If a child uses a family iPhone or iPad, Apple’s Screen Time and App Store parental controls are the right tools to manage installs, purchases, and time limits.</p>
+            </article>
+
+            <article>
+                <h2>When this text changes</h2>
+                <p>If future versions introduce materially different behavior (for example, optional online features), this overview will be revised so it continues to match what the app actually does.</p>
+            </article>
+        </div>
+
+        <div class="dual" style="margin-top: 22px;">
+            <div class="mini">
+                <h3>Your controls</h3>
+                <p>Uninstalling the app removes its local sandbox from the device. For Apple ID–level privacy choices, use the privacy settings Apple provides for your account.</p>
+            </div>
+            <div class="mini">
+                <h3>Not legal advice</h3>
+                <p>Nothing here replaces mandatory disclosures required by law in your country or region, and it does not override Apple’s terms for using the App Store.</p>
+            </div>
+        </div>
+
+        <p class="closing">If the on-device experience or the store listing ever disagree, trust the behavior of the installed build and the App Store “App Privacy” section first, then this page as a plain-language companion.</p>
+
+        <nav class="nav-home">
+            <a href="index.html">Back to overview</a>
+        </nav>
+    </div>
+</body>
+
+</html>
